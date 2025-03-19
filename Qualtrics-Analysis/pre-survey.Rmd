@@ -1,0 +1,73 @@
+---
+title: "Pre-survey Qualrics Analysis for Collaborative Problem Solving in Asymmetric Virtual Reality"
+output: html_document
+date: "`r Sys.Date()`"
+---
+
+# Exploring the data
+
+This survey contains the TIPI and VGEM along with two single question measures for virtual reality usage 
+and teammate familiarity.Additional details about the questions and scoring specifics can be found in the
+root level README.
+
+To begin our analysis, we will look at the columns and summary statistics to get an idea of how the data 
+is saved and exported from Qualtrics.
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(ggplot2)
+library(lubridate) 
+library(gghighlight)
+library(RColorBrewer)
+library(gridExtra)
+library(tidyr)
+library(stringr)
+library(R.utils)
+
+
+```
+
+```{r}
+
+preData <- read.csv("../HCC8500-pre_03-18.csv")
+experimentData <- read.csv("../Experiment_Log.csv")
+
+colnames(preData)
+# our data starts at pid
+head(preData)
+# first two rows are subheadings/labels and can be removed
+preData <- preData[- (1:2), ] %>%
+  select(-StartDate, -EndDate, -Status, -IPAddress, -Progress, -Duration..in.seconds., -Finished, -RecordedDate, -ResponseId, -RecipientLastName, -RecipientFirstName, -RecipientEmail, -ExternalReference, -LocationLatitude, -LocationLongitude, -DistributionChannel, -UserLanguage)
+head(preData)
+
+summary(preData)
+
+colnames(experimentData)
+# Session.ID, VR.PID, PC.PID are the important ones for parsing data
+head(experimentData)
+
+summary(experimentData)
+
+```
+# TIPI Scoring
+
+Even number questions are reverse scored, and the pairs for each facet are averaged. 1 is paired with 6, 2 is paired with 7, 3 is paired with 8, 4 is paired with 9 and 5 is paired with 10.
+
+```{r tipi}
+
+# add columns to data frame 
+preData <- preData %>%
+  mutate(extraversion = (as.numeric(tipi_1) + (8 - as.numeric(tipi_6))) / 2) %>%
+  mutate(agreeableness = (as.numeric(tipi_2) + (8 - as.numeric(tipi_7))) / 2) %>%
+  mutate(conscientiousness = (as.numeric(tipi_3) + (8 - as.numeric(tipi_8))) / 2) %>%
+  mutate(emotionalStability = (as.numeric(tipi_4) + (8 - as.numeric(tipi_9))) / 2) %>%
+  mutate(openness = (as.numeric(tipi_5) + (8 - as.numeric(tipi_10))) / 2)
+
+# select the columns to save to new df
+tipiData <- select(preData, extraversion, agreeableness, conscientiousness, emotionalStability, openness)
+
+# remove the columns from original df
+preData <- select(preData, -extraversion, -agreeableness, -conscientiousness, -emotionalStability, -openness)
+
+```
+

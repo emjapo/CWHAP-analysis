@@ -53,6 +53,46 @@ Group personality composition can be assessed as a predictor of group effectiven
 
 ### Video Game Experience
 
+The Video Game Experience Measure from Williams (2024) contains 26 questions that examine 5 factors of video game experience. The scoring for the measure is complex and detailed in the tables below. Video game experience will be used as a control variable since participant's with more gaming experience will be more likely to orient themselves and adjust to controls faster than less experienced participants. The task is video game based, and therefore previous gaming experience would be a confounding variable that could explain performance.
+
+| Question  | Response Options  | Scale | Scoring |
+| :------------- | :------------- | :------------- | :------------ |
+| Q1.1 | 0 to 20 years' experience | 0 - 20 | response x 5 |
+| Q1.2 | 0 to 20 years' experience | 0 - 20 | response x 5 |
+| Q1.3 | 0 to 20 years' experience | 0 - 20 | response x 5 |
+| Q2 | 0 to 100 Age | 0 - 100 | Retained as is (where 100 = n/a) |
+| Q3.1 | 1 to 7 | 7-point | response x ~14.29 |
+| Q3.2 | 1 to 7 | 7-point | response x ~14.29 |
+| Q3.3 | 1 to 7 | 7-point | response x ~14.29 |
+| Q3.4 | 1 to 7 | 7-point | response x ~14.29 |
+| Q3.5 | 1 to 7 | 7-point | response x ~14.29 |
+| Q4 | Control System Preference | 5 options| Retained as is |
+| Q5 | Hours per week | Numeric entry | Retained as is |
+| Q6 | 1 to 4 proficiency level | 4-point | response x 25 |
+| Q7 | 1 to 5 experience level | 5-point | response x 20 |
+| Q8.1 | 0 to 100 motivation | 0 - 100 | Retained as is |
+| Q8.2 | 0 to 100 motivation | 0 - 100 | Retained as is |
+| Q8.3 | 0 to 100 motivation | 0 - 100 | Retained as is |
+| Q9.1 | 0 to 100 motivation | 0 - 100 | Retained as is |
+| Q9.2 | 0 to 100 level of skill mastery | 0 - 100 | Retained as is |
+| Q9.3 | 0 to 100 level of skill mastery | 0 - 100 | Retained as is |
+| Q9.4 | 0 to 100 level of skill mastery | 0 - 100 | Retained as is |
+| Q9.5 | 0 to 100 level of skill mastery | 0 - 100 | Retained as is |
+| Q9.6 | 0 to 100 level of skill mastery | 0 - 100 | Retained as is |
+| Q9.7 | 0 to 100 level of skill mastery | 0 - 100 | Retained as is |
+| Q9.8 | 0 to 100 level of skill mastery | 0 - 100 | Retained as is |
+| Q10 | -100 to 100 confidence | -100 - 100 | (response + 100) / 2|
+| Q11 | 1 to 6 | 5-point | response x ~16.67 |
+
+| VGEM Factor | VGEM Items | Formula for Factor Average Score |
+| :------  | :------- | :------- |
+| Game-Skill Confidence | Q9.1, Q9.2, Q9.3, Q9.4, Q9.5, Q9.6, Q9.7, Q9.8, Q10 | {Q9.1 + Q9.2 + Q9.3 + Q9.4 + Q9.5 + Q9.6 + Q9.7 + Q9.8 + Q10) / 9 |
+| Gaming Lifespan | Q1.1, Q1.2, Q1.3 | {Q1.1 + Q1.2 + Q1.3) / 3 |
+| Gaming Intensity | Q3.5, Q8.1, Q9.2, Q9.3, Q11 | {Q3.5 + Q8.1 + Q9.2 + Q9.3 + Q11) / 5 |
+| Gaming Frequency | Q3.2, Q3.3 |{ Q3.2 + Q3.3) / 2 |
+| Gamer Self-efficacy | Q3.2, Q6, Q7 | {Q3.2 + Q6 + Q7) / 2 |
+
+
 ### Virtual Reality Usage
 
 A single 5-point Likert scale response is used to measure VR usage from none at all to a great deal.
@@ -65,7 +105,7 @@ A single 5-point Likert scale response is used to measure teammate familiarity b
 
 ### Team Processes (courtesy of Dr. Olivia Newton)
 
-A measure of team process was used in the study. Specifically, the 10-item short-form version of Mathieu et al. (2020)'s team process measure was administered to participants in the real group condition. The measure contains three subscales representing second-order team process constructs: Transition Processes, Action Processes, and Interpersonal Processes. 
+A measure of team process was used in the study. Specifically, the 10-item short-form version of Mathieu et al. (2020)'s team process measure was administered to participants. The measure contains three subscales representing second-order team process constructs: Transition Processes, Action Processes, and Interpersonal Processes. 
 
 *Scoring*
 
@@ -115,3 +155,5 @@ Gosling, S. D., Rentfrow, P. J., & Swann, W. B., Jr. (2003). A very brief measur
 Halfhill, T., Sundstrom, E., Lahner, J., Calderone, W., & Nielsen, T. M. (2005). Group personality composition and group effectiveness: An integrative review of empirical research. Small Group Research, 36(1), 83–105.
 
 Mathieu, J. E., Luciano, M. M., D’Innocenzo, L., Klock, E. A., & LePine, J. A. (2020). The development and construct validity of a team processes survey measure. Organizational Research Methods, 23(3), 399–431.
+
+Williams, J. L. (2024). Informing a comprehensive player profile model through the development of a Video game experience measure to support theory of mind in artificial social intelligence. (graduate thesis and dissertation). University of Central Florida, Orlando, FL, United States. Available at: https://stars.library.ucf.edu/etd2023/275

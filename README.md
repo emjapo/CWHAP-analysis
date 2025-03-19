@@ -85,12 +85,12 @@ The Video Game Experience Measure from Williams (2024) contains 26 questions tha
 | Q11 | 1 to 6 | 5-point | response x ~16.67 |
 
 | VGEM Factor | VGEM Items | Formula for Factor Average Score |
-| :------  | :------- | :------- |
-| Game-Skill Confidence | Q9.1, Q9.2, Q9.3, Q9.4, Q9.5, Q9.6, Q9.7, Q9.8, Q10 | {Q9.1 + Q9.2 + Q9.3 + Q9.4 + Q9.5 + Q9.6 + Q9.7 + Q9.8 + Q10) / 9 |
-| Gaming Lifespan | Q1.1, Q1.2, Q1.3 | {Q1.1 + Q1.2 + Q1.3) / 3 |
-| Gaming Intensity | Q3.5, Q8.1, Q9.2, Q9.3, Q11 | {Q3.5 + Q8.1 + Q9.2 + Q9.3 + Q11) / 5 |
-| Gaming Frequency | Q3.2, Q3.3 |{ Q3.2 + Q3.3) / 2 |
-| Gamer Self-efficacy | Q3.2, Q6, Q7 | {Q3.2 + Q6 + Q7) / 2 |
+| :---------  | :--------- | :------------------------------- |
+| Game-Skill Confidence | Q9.1, Q9.2, Q9.3, Q9.4, Q9.5, Q9.6, Q9.7, Q9.8, Q10 | (Q9.1 + Q9.2 + Q9.3 + Q9.4 + Q9.5 + Q9.6 + Q9.7 + Q9.8 + Q10) / 9 |
+| Gaming Lifespan | Q1.1, Q1.2, Q1.3 | (Q1.1 + Q1.2 + Q1.3) / 3 |
+| Gaming Intensity | Q3.5, Q8.1, Q9.2, Q9.3, Q11 | (Q3.5 + Q8.1 + Q9.2 + Q9.3 + Q11) / 5 |
+| Gaming Frequency | Q3.2, Q3.3 | (Q3.2 + Q3.3) / 2 |
+| Gamer Self-efficacy | Q3.2, Q6, Q7 | (Q3.2 + Q6 + Q7) / 2 |
 
 
 ### Virtual Reality Usage
@@ -141,18 +141,49 @@ One 11-point bipolar question measures the evaluation of the teammate's performa
 
 ### Mental Workload
 
-NASA-TLX
+The NASA Task Load Index or NASA-TLX (Hart, 2006) measures perceived mental workload. Workload will be used as one of the response variable to analyze how modality impacts team performance. The NASA-TLX consists of 6 7-point scale responses. This instrument is presented as the raw TLX and therefore each question can be taken individually.
+
+| Label/Facet | Question |
+| :---------- | :------- |
+| mental_demand | How mentally demanding was the task? |
+| physical_demand | How physically demanding was the task? |
+| temporal_demand | How hurried or rushed was the pace of the task? |
+| performance | How successful were you in accomplishing what you were asked to do? |
+| effort | How hard did you have to work to accomplish your level of performance? |
+| frustration | How insecure, discouraged, irritated, stressed, and annoyed were you? |
 
 ### Perceived Usability
 
-System Usability Scale (SUS)
+System Usability Scale (SUS) (Brooke, 1995) is administered to provide a secondary measure to how modality predicts performance. This measure will also provide feedback on the task itself which we can use to further refine the task if repeated for a full study. Each question is a 5-point Likert scale response ranging from strongly disagree to strongly agree.
+
+| Label | Question |
+| :---- | :------- |
+| usability_1 | I think that I would like to use this system frequently |
+| usability_2 | I found the system was unnecessarily complex |
+| usability_3 | I thought the system was easy to use |
+| usability_4 | I think that I would need the support of a technical person to be able to use this system |
+| usability_5 | I found the various functions in this system were well integrated |
+| usability_6 | I thought there was too much inconsistency in this system |
+| usability_7 | I would imagine that most people would learn to use this system very quickly |
+| usability_8 | I found the system was very cumbersome to use |
+| usability_9 | I felt very confident using this system |
+| usability_10 | I needed to learn a lot of things before I could get going with this system |
+
+
+SUS is scored using the following formula.
+
+$$ SUS = 2.5 ( 20 + \sum (SUS01, SUS03, SUS05, SUS07, SUS09) - \sum (SUS02, SUS04, SUS06, SUS08, SUS10) ) $$
 
 
 ## References
 
+Brooke, J. (1995). SUS: A quick and dirty usability scale. Usability Eval. Ind., 189.
+
 Gosling, S. D., Rentfrow, P. J., & Swann, W. B., Jr. (2003). A very brief measure of the big five personality domains. Journal of Research in Personality, 37, 504-528.
 
 Halfhill, T., Sundstrom, E., Lahner, J., Calderone, W., & Nielsen, T. M. (2005). Group personality composition and group effectiveness: An integrative review of empirical research. Small Group Research, 36(1), 83–105.
+
+Hart, S. G. (2006). Nasa-Task Load Index (NASA-TLX); 20 Years Later. Proceedings of the Human Factors and Ergonomics Society Annual Meeting, 50(9), 904–908. https://doi.org/10.1177/154193120605000909
 
 Mathieu, J. E., Luciano, M. M., D’Innocenzo, L., Klock, E. A., & LePine, J. A. (2020). The development and construct validity of a team processes survey measure. Organizational Research Methods, 23(3), 399–431.
 

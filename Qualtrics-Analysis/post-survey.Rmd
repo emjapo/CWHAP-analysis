@@ -66,13 +66,29 @@ There is a little confusion on how to score this. I am taking guidance from Dr. 
 
 tp <- postData %>%
   mutate(teamprocess_mean = select(., starts_with(c("transition", "action", "interpersonal"))) %>% rowMeans(),
-         transprocess_mean = select(., starts_with(c("transition"))) %>% rowMeans(),
-         actionprocess_mean = select(., starts_with(c("action"))) %>% rowMeans(),
-         interprocess_mean = select(., starts_with(c("interpersonal"))) %>% rowMeans())
+         transition_process_mean = select(., starts_with(c("transition"))) %>% rowMeans(),
+         action_process_mean = select(., starts_with(c("action"))) %>% rowMeans(),
+         interpersonal_process_mean = select(., starts_with(c("interpersonal"))) %>% rowMeans())
 
 head(tp)
 
 postData <- tp
+
+```
+
+
+# SUS
+
+The formula for scoring the SUS can be found in the main README.
+
+```{r sus}
+
+
+postData <- postData %>%
+  mutate(sus = 2.5 * (20 + (select(., usability, usability.2, usability.4, usability.6, usability.8 ) %>% rowSums()) - (select(., usability.1, usability.3, usability.5, usability.7, usability.9) %>% rowSums()) ))
+
+
+head(postData)
 
 ```
 

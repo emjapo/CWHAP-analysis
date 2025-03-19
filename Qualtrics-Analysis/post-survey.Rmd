@@ -1,0 +1,80 @@
+---
+title: "Post-survey Qualrics Analysis for Collaborative Problem Solving in Asymmetric Virtual Reality"
+output: html_document
+date: "`r Sys.Date()`"
+---
+
+# Exploring the Data
+
+The post task survey contains a team processes instrument, the NASA-TLX, and the SUS that need to be scored. Additionally, 
+there are two 11-point single question evaluations of the participant and their teammate.
+
+We will start by examining and cleaning the data before scoring it.
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(ggplot2)
+library(lubridate) 
+library(gghighlight)
+library(RColorBrewer)
+library(gridExtra)
+library(tidyr)
+library(stringr)
+library(R.utils)
+
+```
+
+
+```{r}
+postData <- read.csv("../HCC8500-post_03-18.csv")
+experimentData <- read.csv("../Experiment_Log.csv")
+
+colnames(postData)
+# our data starts at pid
+head(postData)
+# first two rows are subheadings/labels and can be removed
+postData <- postData[- (1:2), ] %>%
+  select(-StartDate, -EndDate, -Status, -IPAddress, -Progress, -Duration..in.seconds., -Finished, -RecordedDate, -ResponseId, -RecipientLastName, -RecipientFirstName, -RecipientEmail, -ExternalReference, -LocationLatitude, -LocationLongitude, -DistributionChannel, -UserLanguage)
+head(postData)
+
+summary(postData)
+
+colnames(experimentData)
+# Session.ID, VR.PID, PC.PID are the important ones for parsing data
+head(experimentData)
+
+summary(experimentData)
+
+
+# create a vector for the column numbers we want make numeric
+col_nums <- c(2:33)
+
+# apply as.numeric() to those columns then print out data type to check
+postData[col_nums] <- sapply(postData[col_nums], as.numeric)
+sapply(postData, class)
+
+# remove vector we no longer need
+rm(col_nums)
+```
+
+
+# Team Processes
+
+There is a little confusion on how to score this. I am taking guidance from Dr. Olivia B. Newton and scoring per individual by averaging the scores. I will keep the subscales separate since they might help better explain performance.
+
+```{r team_processes}
+
+tp <- postData %>%
+  mutate(teamprocess_mean = select(., starts_with(c("transition", "action", "interpersonal"))) %>% rowMeans(),
+         transprocess_mean = select(., starts_with(c("transition"))) %>% rowMeans(),
+         actionprocess_mean = select(., starts_with(c("action"))) %>% rowMeans(),
+         interprocess_mean = select(., starts_with(c("interpersonal"))) %>% rowMeans())
+
+head(tp)
+
+postData <- tp
+
+```
+
+
+# Performance Evaluation Similarity

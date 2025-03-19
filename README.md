@@ -121,7 +121,6 @@ Transition Processes
 | goal_specification_1 | Ensure that everyone on our team clearly understands our goals? | Goal Specification |
 | strategy_formulation_1 | Develop an overall strategy to guide our team activities? | Strategy Formulation and Planning |
 
-
 Action Processes 
 | Label  | Item  | Facet |
 | :------------- | :------------- | :------------- |

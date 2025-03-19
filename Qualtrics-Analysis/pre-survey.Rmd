@@ -63,11 +63,39 @@ preData <- preData %>%
   mutate(emotionalStability = (as.numeric(tipi_4) + (8 - as.numeric(tipi_9))) / 2) %>%
   mutate(openness = (as.numeric(tipi_5) + (8 - as.numeric(tipi_10))) / 2)
 
-# select the columns to save to new df
-tipiData <- select(preData, extraversion, agreeableness, conscientiousness, emotionalStability, openness)
 
-# remove the columns from original df
-preData <- select(preData, -extraversion, -agreeableness, -conscientiousness, -emotionalStability, -openness)
+```
+
+
+# VGEM Scoring
+
+The scoring for VGEM is a bit convoluted. Tables explaining the scoring can be found in the main README. The measure consists of 5 factors.
+
+```{r vgem}
+
+# WARNING rerun entire script before using this data to avoid unwanted data manipulations
+
+# Score the data that needs scoring
+vgemData <- preData %>%
+  mutate(Q1._1 = as.numeric(Q1._1) * 5 ) %>%
+  mutate(Q1._2 = as.numeric(Q1._2) * 5 ) %>%
+  mutate(Q1._3 = as.numeric(Q1._3) * 5 ) %>%
+  mutate(Q3_1 = as.numeric(Q3_1) * (100/7) ) %>%
+  mutate(Q3_2 = as.numeric(Q3_2) * (100/7) ) %>%
+  mutate(Q3_3 = as.numeric(Q3_3) * (100/7) ) %>%
+  mutate(Q3_4 = as.numeric(Q3_4) * (100/7) ) %>%
+  mutate(Q3_5 = as.numeric(Q3_5) * (100/7) ) %>%
+  mutate(Q6 = as.numeric(Q6) * 25 ) %>%
+  mutate(Q7 = as.numeric(Q7) * (100/6) ) %>%
+  mutate(Q10_1 = ( as.numeric(Q10_1) + 100 ) / 2 ) %>%
+  mutate(Q11 = as.numeric(Q11) * (100/6) )
+
+preData <- vgemData %>%
+  mutate(skillConfidence = (as.numeric(Q9_1) + as.numeric(Q9_2) + as.numeric(Q9_3) + as.numeric(Q9_4) + as.numeric(Q9_5) + as.numeric(Q9_6) + as.numeric(Q9_7) + as.numeric(Q9_8) + as.numeric(Q10_1)) / 9) %>%
+  mutate(gameLifespan = (as.numeric(Q1._1) + as.numeric(Q1._2) + as.numeric(Q1._3)) / 3 ) %>%
+  mutate(gameIntensity = (as.numeric(Q3_5) + as.numeric(Q8_1) + as.numeric(Q9_2) + as.numeric(Q9_3) + as.numeric(Q11)) / 5 ) %>%
+  mutate(gameFrequency = (as.numeric(Q3_2) + as.numeric(Q3_3)) / 2) %>%
+  mutate(gameSelfEfficacy = (as.numeric(Q3_2) + as.numeric(Q6) + as.numeric(Q7)) / 3)
 
 ```
 

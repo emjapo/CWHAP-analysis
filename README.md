@@ -66,10 +66,10 @@ The Video Game Experience Measure from Williams (2024) contains 26 questions tha
 | Q3.3 | 1 to 7 | 7-point | response x ~14.29 |
 | Q3.4 | 1 to 7 | 7-point | response x ~14.29 |
 | Q3.5 | 1 to 7 | 7-point | response x ~14.29 |
-| Q4 | Control System Preference | 5 options| Retained as is |
+| Q4 | Control System Preference | 5 options | Retained as is |
 | Q5 | Hours per week | Numeric entry | Retained as is |
 | Q6 | 1 to 4 proficiency level | 4-point | response x 25 |
-| Q7 | 1 to 5 experience level | 5-point | response x 20 |
+| Q7* | 1 to 5 experience level | 5-point | response x 20 |
 | Q8.1 | 0 to 100 motivation | 0 - 100 | Retained as is |
 | Q8.2 | 0 to 100 motivation | 0 - 100 | Retained as is |
 | Q8.3 | 0 to 100 motivation | 0 - 100 | Retained as is |
@@ -82,7 +82,7 @@ The Video Game Experience Measure from Williams (2024) contains 26 questions tha
 | Q9.7 | 0 to 100 level of skill mastery | 0 - 100 | Retained as is |
 | Q9.8 | 0 to 100 level of skill mastery | 0 - 100 | Retained as is |
 | Q10 | -100 to 100 confidence | -100 - 100 | (response + 100) / 2|
-| Q11 | 1 to 6 | 5-point | response x ~16.67 |
+| Q11 | 1 to 6 | 6-point | response x ~16.67 |
 
 | VGEM Factor | VGEM Items | Formula for Factor Average Score |
 | :---------  | :--------- | :------------------------------- |
@@ -90,7 +90,9 @@ The Video Game Experience Measure from Williams (2024) contains 26 questions tha
 | Gaming Lifespan | Q1.1, Q1.2, Q1.3 | (Q1.1 + Q1.2 + Q1.3) / 3 |
 | Gaming Intensity | Q3.5, Q8.1, Q9.2, Q9.3, Q11 | (Q3.5 + Q8.1 + Q9.2 + Q9.3 + Q11) / 5 |
 | Gaming Frequency | Q3.2, Q3.3 | (Q3.2 + Q3.3) / 2 |
-| Gamer Self-efficacy | Q3.2, Q6, Q7 | (Q3.2 + Q6 + Q7) / 2 |
+| Gamer Self-efficacy | Q3.2, Q6, Q7 | (Q3.2 + Q6 + Q7) / 3 |
+
+*Q7 scoring is marked incorrectly from the instrument. The question is on a 6-point scale not a 5-point, so for analysis, Q7 was scored as a 6-point scale response.*
 
 
 ### Virtual Reality Usage

@@ -132,3 +132,10 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+    # Notes:
+    # Do the cutoff of 10 minutes
+    # Legend and axis labels
+    # See if you can correlate the spiks in the graph with the video recording
+    # Save the average magnitudes from each group to a CSV file for Emily

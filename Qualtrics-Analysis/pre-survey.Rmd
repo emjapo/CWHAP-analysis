@@ -7,7 +7,7 @@ date: "`r Sys.Date()`"
 # Exploring the data
 
 This survey contains the TIPI and VGEM along with two single question measures for virtual reality usage 
-and teammate familiarity.Additional details about the questions and scoring specifics can be found in the
+and teammate familiarity. Additional details about the questions and scoring specifics can be found in the
 root level README.
 
 To begin our analysis, we will look at the columns and summary statistics to get an idea of how the data 
@@ -40,6 +40,9 @@ preData <- preData[- (1:2), ] %>%
   select(-StartDate, -EndDate, -Status, -IPAddress, -Progress, -Duration..in.seconds., -Finished, -RecordedDate, -ResponseId, -RecipientLastName, -RecipientFirstName, -RecipientEmail, -ExternalReference, -LocationLatitude, -LocationLongitude, -DistributionChannel, -UserLanguage)
 head(preData)
 
+preData$pid <- toupper(preData$pid)
+
+
 summary(preData)
 
 colnames(experimentData)
@@ -47,6 +50,19 @@ colnames(experimentData)
 head(experimentData)
 
 summary(experimentData)
+
+# add the experiment data to the make dataframe
+experimentData_long <- experimentData %>%
+  tidyr::pivot_longer(cols = c(VR.PID, PC.PID), 
+                      names_to = "PID_Type", 
+                      values_to = "pid") %>%
+  select(Session.ID, pid, PID_Type, Number_of_tasks, Solar_Flares_Avoided)
+
+preData <- preData %>%
+  left_join(experimentData_long, by = "pid") 
+
+head(preData)
+
 
 ```
 # TIPI Scoring
@@ -96,6 +112,54 @@ preData <- vgemData %>%
   mutate(gameIntensity = (as.numeric(Q3_5) + as.numeric(Q8_1) + as.numeric(Q9_2) + as.numeric(Q9_3) + as.numeric(Q11)) / 5 ) %>%
   mutate(gameFrequency = (as.numeric(Q3_2) + as.numeric(Q3_3)) / 2) %>%
   mutate(gameSelfEfficacy = (as.numeric(Q3_2) + as.numeric(Q6) + as.numeric(Q7)) / 3)
+
+
+
+```
+
+
+# Plotting team composition
+
+To get an overview of the individual differences (Big Five & VGEM), they will be plotted corresponding to the groups.
+
+```{r id_plots}
+# VGEM
+vgem_long <- preData %>%
+  tidyr::pivot_longer(cols = c(skillConfidence, gameLifespan, gameIntensity, gameFrequency, gameSelfEfficacy), 
+                      names_to = "VGEM_facet", 
+                      values_to = "vgem") %>%
+  select(Session.ID, pid, PID_Type, VGEM_facet, vgem) %>%
+  mutate(PID_Type = recode(PID_Type, PC.PID = "PC", VR.PID = "VR"))
+
+
+vgem_long %>%
+  ggplot(aes(x=VGEM_facet, y=vgem, group=PID_Type, fill=PID_Type)) +
+  geom_bar(position="dodge", stat = "identity") +
+  theme_minimal() +
+  scale_fill_manual(values=met.brewer("Hiroshige", 2)) +
+  facet_wrap(~Session.ID, ncol=4) +
+  coord_flip() +
+  labs(title = "Overview of Team Composition in Terms of Video Game Experience", fill="Modality Type", x="Video Game Experience Facet", y="Score out of 100")
+
+
+# Big Five (TIPI)
+tipi_long <- preData %>%
+  tidyr::pivot_longer(cols = c(openness, conscientiousness, extraversion, agreeableness, emotionalStability), 
+                      names_to = "TIPI_facet", 
+                      values_to = "tipi") %>%
+  select(Session.ID, pid, PID_Type, TIPI_facet, tipi) %>%
+  mutate(PID_Type = recode(PID_Type, PC.PID = "PC", VR.PID = "VR"))
+
+tipi_long %>%
+  ggplot(aes(x=TIPI_facet, y=tipi, group=PID_Type, fill=PID_Type)) +
+  geom_bar(position="dodge", stat = "identity") +
+  theme_minimal() +
+  scale_fill_manual(values=met.brewer("Hiroshige", 2)) +
+  facet_wrap(~Session.ID, ncol=4) +
+  coord_flip() +
+  labs(title = "Overview of Team Composition in Terms of Big Five Personality", fill="Modality Type", x="Big Five Facet", y="Score out of 7")
+
+  
 
 ```
 

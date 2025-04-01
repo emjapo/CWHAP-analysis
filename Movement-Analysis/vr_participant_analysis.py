@@ -81,21 +81,26 @@ def plot_position(hand_l, hand_r, head):
     ax.set_zlim([np.min(all_z) - 1, np.max(all_z) + 1])
 
     # Plot the data points
-    ax.plot(hand_l[0], hand_l[1], hand_l[2], c='r', label='Left Hand', linewidth=.1)
-    ax.plot(hand_r[0], hand_r[1], hand_r[2], c='g', label='Right Hand', linewidth=.1)
-    ax.plot(head[0], head[1], head[2], c='b', label='Head', linewidth=.1)
+    ax.plot(hand_l[0], hand_l[1], hand_l[2], c='r', label='Left Hand', linewidth=.25)
+    ax.plot(hand_r[0], hand_r[1], hand_r[2], c='g', label='Right Hand', linewidth=.25)
+    ax.plot(head[0], head[1], head[2], c='b', label='Head', linewidth=.25)
 
     # # Set appropriate axis labels
     ax.set_xlabel('X-axis')
     ax.set_ylabel('Z-axis')
     ax.set_zlabel('Y-axis')
 
+    # Add the title to the plot
+    ax.set_title('VR Player Positional Data')
+
+    ax.legend(loc='upper left', bbox_to_anchor=(-0.35, 0.6))
     plt.show()
 
 def plot_magnitude(time, hand_l_mag, hand_r_mag, head_mag):
 
     # Creates the 2D plot
     plt.plot(time[:-1], hand_l_mag)
+    #ax.lengend(loc='lower left')
     plt.show()
 
 

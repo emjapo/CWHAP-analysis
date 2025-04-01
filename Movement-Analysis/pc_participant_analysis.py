@@ -18,6 +18,8 @@ def read_csv_file(file_path, *column_indices):
 
             # Create the time array
             time = np.array([float(row[1]) for row in rows])
+            experiment_limit = np.where(time <= 600.0)[0]
+            time = time[experiment_limit]
 
             # Initialize the positional array
             position_arrays = []
@@ -27,7 +29,9 @@ def read_csv_file(file_path, *column_indices):
                 x_coords = []
                 y_coords = []
 
-                for row in rows:
+                for i in experiment_limit:
+
+                    row = rows[i]
                     # Assign the string value and convert to floating point
                     value = row[column_index]
                     coords = value.strip("() ").split(";")
@@ -46,10 +50,10 @@ def read_csv_file(file_path, *column_indices):
     # Exception catch statements
     except FileNotFoundError:
         print(f"Error: The file '{file_path} was not found.")
-        return None, *[None] * len(column_indices)
+        exit()
     except Exception as e:
         print(f"An error occured: {e}")
-        return None, *[None] * len(column_indices)
+        exit()
 
 
 
@@ -60,9 +64,44 @@ def calculate_magnitude(velocity):
 
 def plot_magnitude(time, mouse):
 
+    # Format for Axes (10 minute experiment)
+    time /= 60.0
+    
     # Creates the 2D plot
-    plt.plot(time, mouse)
+    fix, ax = plt.subplots()
+
+    plt.plot(time, mouse, color='black')
+    ax.set_title("Mouse Magnitude")
+    ax.set_xlabel("Time Elapsed (m)")
+    ax.set_ylabel("Magnitude (N)")
+
     plt.show()
+
+def write_csv_file(file_path, experiment_row, mouse_avg):
+    try:
+
+        # Read the CSV file from path
+        with open(file_path, 'r', newline='') as file:
+            reader = csv.reader(file)
+            rows = list(reader)
+        
+        if 1 <= experiment_row < len(rows):
+            rows[experiment_row][4] = f"{mouse_avg:.6f}"
+        else:
+            print("Invalid Experiment Row")
+            return
+        
+        with open(file_path, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(rows)
+    
+    # Exception catch statements
+    except FileNotFoundError:
+        print(f"Error: The file '{file_path}' was not found.")
+        exit()
+    except Exception as e:
+        print(f"An error occured: {e}")
+        exit()
 
 
 def main():
@@ -79,8 +118,13 @@ def main():
     # Plot the magnitude over time
     plot_magnitude(time, mouse_mag)
 
-    # Print the average for the magnitude
-    print(f"Average Mouse Magnitude: {np.mean(mouse_mag)}" )
+    # Calculate the average mouse magnitude
+    mouse_mag_avg = np.mean(mouse_mag)
+
+    experiment_row = int(input("Enter the experiment number to save data: "))
+    file_path = input("Enter the output file name: ")
+    write_csv_file(file_path, experiment_row, mouse_mag_avg)
+    
     
 
 if __name__ == "__main__":

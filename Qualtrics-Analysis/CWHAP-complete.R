@@ -16,9 +16,10 @@ library(MetBrewer)
 
 # Prepare and clean data -------------------------------------------------------
 # Import data files
-preData <- read.csv("../HCC8500-pre_03-18.csv")
-postData <- read.csv("../HCC8500-post_03-18.csv")
+preData <- read.csv("../HCC8500-pre_04-03.csv")
+postData <- read.csv("../HCC8500-post_04-03.csv")
 experimentData <- read.csv("../Experiment_Log.csv")
+movementData <- read.csv("../Single_Metric.csv")
 
 # Remove unnecessary rows and columns
 # first two rows are subheadings/labels and can be removed
@@ -43,12 +44,12 @@ experimentData_long <- experimentData %>%
 # Join dataframes
 cwhapData <- preData %>%
   left_join(postData, by = "pid") %>%
-  left_join(experimentData_long, by = "pid") 
-
+  left_join(experimentData_long, by = "pid") %>%
+  left_join(movementData, by = "Session.ID")
 
 
 # Create a vector for the column numbers we want make numeric
-col_nums <- c(c(2:14), c(16:20), c(23:72))
+col_nums <- c(c(2:14), c(16:20), c(23:72), c(78:83))
 
 # Apply as.numeric() to those columns then print out data type to check
 cwhapData[col_nums] <- sapply(cwhapData[col_nums], as.numeric)

@@ -13,6 +13,8 @@ library(tidyr)
 library(stringr)
 library(R.utils)
 library(MetBrewer)
+library(car)
+
 
 # Prepare and clean data -------------------------------------------------------
 # Import data files
@@ -137,7 +139,154 @@ cwhapData <- cwhapData %>%
 
 
 # Conduct analyses -------------------------------------------------------------
+#
+# Set directory to save plots
+setwd("../Plots")
 
 
+# Median Split Movement as a Predictor -----------------------------------------
 
-  
+# median splits, high = 1 low = 0
+movement_stats <- cwhapData %>%
+  filter(PID_Type == "VR.PID") %>% # the data is duplicated in the VR and PC rows so selecting one will stop doubling the values
+  mutate(total_vr_movement = Left_Hand_Magnitude + Right_Hand_Magnitude + Head_Magnitude) %>%
+  mutate(total_movement = total_vr_movement + Mouse_Magnitude) %>%
+  mutate(category_left = 
+           case_when(
+             Left_Hand_Magnitude > median(Left_Hand_Magnitude) ~ "High",
+             Left_Hand_Magnitude < median(Left_Hand_Magnitude) ~ "Low",
+           )
+  ) %>%
+  mutate(category_right = 
+           case_when(
+             Right_Hand_Magnitude > median(Right_Hand_Magnitude) ~ "High",
+             Right_Hand_Magnitude < median(Right_Hand_Magnitude) ~ "Low",
+           )
+  ) %>%
+  mutate(category_head = 
+           case_when(
+             Head_Magnitude > median(Head_Magnitude) ~ "High",
+             Head_Magnitude < median(Head_Magnitude) ~ "Low",
+           )
+  ) %>%
+  mutate(category_mouse = 
+            case_when(
+              Mouse_Magnitude > median(Mouse_Magnitude) ~ "High",
+              Mouse_Magnitude < median(Mouse_Magnitude) ~ "Low",
+            )
+  ) %>%
+  mutate(category_vr_total = 
+           case_when(
+             total_vr_movement > median(total_vr_movement) ~ "High",
+             total_vr_movement < median(total_vr_movement) ~ "Low",
+           )
+  ) %>%
+  mutate(category_total = 
+           case_when(
+             total_movement > median(total_movement) ~ "High",
+             total_movement < median(total_movement) ~ "Low",
+           )
+  )
+
+# Plot distribution
+png(filename = "task_performance_distribution.png",
+    width = 2100, height = 2400,
+    units = "px", res = 330)
+
+barplot(table(movement_stats$Number_of_tasks), main="Distribution of Team Performance", 
+        xlab="Number of Tasks Completed", ylab = "Count")
+
+dev.off()
+
+# Plot relationship between predictor and outcome
+png(filename = "left_hand_success_relationship.png",
+    width = 2100, height = 2400,
+    units = "px", res = 330)
+
+ggplot(movement_stats, aes(x=Left_Hand_Magnitude, y=Number_of_tasks)) +
+  geom_point(size=3) +
+  geom_smooth(method="loess", se=FALSE, color="#F9D14AFF") +
+  labs(title="Relationship between Left Hand Magnitude and Task Performance",
+       x="Left Hand Magnitude", y="Number of Tasks Completed") +
+  theme_minimal() 
+
+dev.off()
+
+
+# Box plot
+png(filename = "left_hand_median_split.png",
+    width = 2100, height = 2400,
+    units = "px", res = 330)
+boxplot(Number_of_tasks ~ category_left, data = movement_stats, 
+        xlab = "Movement Group", ylab = "Number of Tasks Completed", main = "Left Hand Movement",
+        ylim = c(0, 4),
+        col = c("#7C4B73FF", "#E78429FF"))
+dev.off()
+
+png(filename = "right_hand_median_split.png",
+    width = 2100, height = 2400,
+    units = "px", res = 330)
+boxplot(Number_of_tasks ~ category_right, data = movement_stats, 
+        xlab = "Movement Group", ylab = "Number of Tasks Completed", main="Right Hand Movement",
+        ylim = c(0, 4),
+        col = c("#7C4B73FF", "#E78429FF"))
+dev.off()
+
+png(filename = "head_median_split.png",
+    width = 2100, height = 2400,
+    units = "px", res = 330)
+boxplot(Number_of_tasks ~ category_head, data = movement_stats, 
+        xlab = "Movement Group", ylab = "Number of Tasks Completed", main="Head Movement",
+        ylim = c(0, 4),
+        col = c("#7C4B73FF", "#E78429FF"))
+dev.off()
+
+png(filename = "vr_median_split.png",
+    width = 2100, height = 2400,
+    units = "px", res = 330)
+boxplot(Number_of_tasks ~ category_vr_total, data = movement_stats, 
+        xlab = "Movement Group", ylab = "Number of Tasks Completed", main="VR Total Movement",
+        ylim = c(0, 4),
+        col = c("#7C4B73FF", "#E78429FF"))
+dev.off()
+
+png(filename = "total_median_split.png",
+    width = 2100, height = 2400,
+    units = "px", res = 330)
+boxplot(Number_of_tasks ~ category_total, data = movement_stats, 
+        xlab = "Movement Group", ylab = "Number of Tasks Completed", main="Total Movement of Both Team Members",
+        ylim = c(0, 4),
+        col = c("#7C4B73FF", "#E78429FF"))
+dev.off()
+
+png(filename = "mouse_median_split.png",
+    width = 2100, height = 2400,
+    units = "px", res = 330)
+boxplot(Number_of_tasks ~ category_mouse, data = movement_stats, 
+        xlab = "Movement Group", ylab = "Number of Tasks Completed", main="Mouse Movement",
+        ylim = c(0, 4),
+        col = c("#7C4B73FF", "#E78429FF"))
+dev.off()
+
+# None of the median split analyses were significant
+# Compute the analysis of variance
+res.aov <- aov(Number_of_tasks ~ Left_Hand_Magnitude, data = movement_stats)
+# Summary of the analysis
+print(summary(res.aov))
+
+# Check that we meet the assumptions
+plot(res.aov, 1)
+plot(res.aov, 2)
+# There are outliers, but due to the small sample size, we have decided not to remove them
+
+# Test for homogeneity of variances, non-significant means that the assumption is met
+print(leveneTest(Number_of_tasks ~ category_total, data = movement_stats))
+
+
+# Spearman's correlation due to the small sample size
+cor_test <- cor.test(movement_stats$Left_Hand_Magnitude, movement_stats$Number_of_tasks, method="spearman")
+print(cor_test)
+
+# Looking at left hand magnitude by itself was a predictor with a positive correlation with movement
+
+

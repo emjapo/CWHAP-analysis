@@ -28,7 +28,7 @@ library(MetBrewer)
 
 
 ```{r}
-postData <- read.csv("../HCC8500-post_03-18.csv")
+postData <- read.csv("../HCC8500-post_04-03.csv")
 experimentData <- read.csv("../Experiment_Log.csv")
 
 colnames(postData)
@@ -134,12 +134,12 @@ print(age_stats)
 
 # Gender
  postData <- postData %>%
-   mutate(gender = recode(gender, `1` = "Male", `2` = "Female"))
+   mutate(gender = dplyr::recode(gender, `1` = "Male", `2` = "Female"))
   
 postData %>%
   ggplot(aes(x=as.factor(gender), fill=as.factor(gender))) +
   geom_bar() +
-  scale_fill_manual(values=met.brewer("Hiroshige", 2)) +
+  scale_fill_manual(values=met.brewer("Archambault", 2)) +
   theme_minimal() +
   labs(title="Participant Gender Distribution", y="Number of Participants", x="Gender") +
   scale_y_continuous(breaks=seq(0, 10, by = 2)) +
@@ -148,30 +148,28 @@ postData %>%
 
 # english proficiency
 postData <- postData %>%
-  mutate(english = recode(english, `1` = "Elementary proficiency", `2`="Limited working proficiency", `3`="Professional working proficiency", `4`="Full professional working proficiency", `5`="Native or bilingual proficiency"))
+  mutate(english = dplyr::recode(english, `1` = "Elementary proficiency", `2`="Limited working proficiency", `3`="Professional working proficiency", `4`="Full professional working proficiency", `5`="Native or bilingual proficiency"))
 
 postData %>%
   ggplot(aes(x=as.factor(english), fill=as.factor(english))) +
   geom_bar() +
-  scale_fill_manual(values=met.brewer("Hiroshige", 5)) +
+  scale_fill_manual(values=met.brewer("Archambault", 5)) +
   theme_minimal() +
   labs(title="Participant English Proficiency Distribution", y="Number of Participants", x="Level of English Proficiency") +
-  scale_y_continuous(breaks=seq(0, 10, by = 2)) +
   theme(legend.position="none")
 
 
 # Lived in America
 postData <- postData %>%
-  mutate(lived = recode(lived, `1`="Less than 1 year", `2`="1 year", `3`="2 years", `4`="3 years", `5`="4 years", `6`="Greater than 5 years", `7`="Native (All my life)"))
+  mutate(lived = dplyr::recode(lived, `1`="Less than 1 year", `2`="1 year", `3`="2 years", `4`="3 years", `5`="4 years", `6`="Greater than 5 years", `7`="Native (All my life)"))
 
 
 postData %>%
   ggplot(aes(x=as.factor(lived), fill=as.factor(lived))) +
   geom_bar() +
-  scale_fill_manual(values=met.brewer("Hiroshige", 7)) +
+  scale_fill_manual(values=met.brewer("Archambault", 7)) +
   theme_minimal() +
   labs(title="Participant Distribution of Length of Time in the US", y="Number of Participants", x="Years in the US") +
-  scale_y_continuous(breaks=seq(0, 10, by = 2)) +
   theme(legend.position="none")
 
 

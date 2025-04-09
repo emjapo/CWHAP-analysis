@@ -516,3 +516,55 @@ ggplot(team_means, aes(x = emotionalStability_mean, y = movement)) +
 dev.off()
 
 
+# Modality analysis-------------------------------------------------------------
+
+# Check for multivariate normality within groups
+mvn_results <- MVN::mvn(data = cwhapData[, c("teamprocess_mean", "mental_demand_1", "sus")], 
+                        mvnTest = "mardia", 
+                        univariateTest = "SW", 
+                        univariatePlot = "none", 
+                        multivariatePlot = "none")
+print(mvn_results$multivariateNormality)
+print(mvn_results$univariateNormality)
+
+# Check for homogeneity of variance-covariance matrices
+box_m_test <- heplots::boxM(cbind(teamprocess_mean, mental_demand_1, sus) ~ as.factor(PID_Type), data = cwhapData)
+print(box_m_test)
+
+
+#  Linear relationship between covariate and dependent variables
+ggplot(cwhapData, aes(x=gameFrequency, y=teamprocess_mean)) +
+  geom_point() +
+  geom_smooth() +
+  labs(main = "Video Game Exp vs Team Performance")
+
+ggplot(cwhapData, aes(x=gameFrequency, y=mental_demand_1)) +
+  geom_point() +
+  geom_smooth() +
+  labs(main = "Video Game Exp vs NASA TLX")
+
+
+ggplot(cwhapData, aes(x=gameFrequency, y=sus)) +
+  geom_point() +
+  geom_smooth() +
+  labs(main = "Video Game Exp vs SUS")
+
+
+# Test interaction between covariate and IV
+interaction_model <- manova(cbind(teamprocess_mean, mental_demand_1, sus) ~ gameFrequency * as.factor(PID_Type), data = cwhapData)
+print(summary(interaction_model, test = "Pillai"))
+
+# Run the MANCOVA
+mancova_model <- manova(cbind(teamprocess_mean, mental_demand_1, sus) ~ gameFrequency + as.factor(PID_Type), data = cwhapData)
+mancova_summary <- summary(mancova_model, test = "Pillai")
+print(mancova_summary)
+
+# Run univariate follow-up tests (ANCOVAs), MANCOVA not significant, but simply curious
+ancova_team_performance <- aov(teamprocess_mean ~ gameFrequency + PID_Type, data = cwhapData)
+print(summary(ancova_team_performance))
+
+ancova_nasa_tlx <- aov(mental_demand_1 ~ gameFrequency + PID_Type, data = cwhapData)
+print(summary(ancova_nasa_tlx))
+
+ancova_sus <- aov(sus ~ gameFrequency + PID_Type, data = cwhapData)
+print(summary(ancova_sus))

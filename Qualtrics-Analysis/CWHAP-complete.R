@@ -568,3 +568,18 @@ print(summary(ancova_nasa_tlx))
 
 ancova_sus <- aov(sus ~ gameFrequency + PID_Type, data = cwhapData)
 print(summary(ancova_sus))
+
+# Post-hoc test all NASA TLX facets with modality
+modelMental <- lm(mental_demand_1 ~ PID_Type, data = cwhapData)
+modelPhysical <- lm(physical_demand_1 ~ PID_Type, data = cwhapData)
+modelTemporal <- lm(temporal_demand_1 ~ PID_Type, data = cwhapData)
+modelPerformance <- lm(performance_1 ~ PID_Type, data = cwhapData)
+modelEffort <- lm(effort_1 ~ PID_Type, data = cwhapData)
+modelFrustration <- lm(frustration_1 ~ PID_Type, data = cwhapData)
+
+summary(modelMental)
+summary(modelPhysical)
+summary(modelTemporal)
+summary(modelPerformance)
+summary(modelEffort)
+summary(modelFrustration)

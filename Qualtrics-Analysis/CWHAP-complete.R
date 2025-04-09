@@ -225,7 +225,7 @@ ggplot(movement_stats, aes(x=Left_Hand_Magnitude, y=Number_of_tasks)) +
 dev.off()
 
 
-# Box plot
+# Box plots
 png(filename = "left_hand_median_split.png",
     width = 2100, height = 2400,
     units = "px", res = 330)
@@ -302,25 +302,13 @@ print(cor_test)
 # Looking at left hand magnitude by itself was a predictor with a positive correlation with movement
 
 
-# We will also run an ANOVA using the Big Five personality measures from the TIPI with each of the five factors and movement as a predictor and team performance as the response variable. 
-# 
+ 
 # TIPI Analyses ----------------------------------------------------------------
 
 # Aggregate the movement measures by just adding all four measures together
 tipi_stats <- cwhapData %>%
   mutate(total_movement = Left_Hand_Magnitude + Right_Hand_Magnitude + Head_Magnitude + Mouse_Magnitude)
 
-# Center variables at the team level (important for multilevel modeling)
-tipi_stats <- tipi_stats %>%
-  group_by(Session.ID) %>%
-  mutate(
-    openness_centered = openness - mean(openness),
-    conscientiousness_centered = conscientiousness - mean(conscientiousness),
-    extraversion_centered = extraversion - mean(extraversion),
-    agreeableness_centered = agreeableness - mean(agreeableness),
-    emotionalStability_centered = emotionalStability - mean(emotionalStability)
-  ) %>%
-  ungroup()
 
 # Calculate team means for each trait
 team_means <- tipi_stats %>%
@@ -363,8 +351,31 @@ summary(modelN)
 
 # None of the models converged likely due to small sample size.
 # Random effects are necessary though.
-# Visualize the data instead to get an idea of general trends
 
+
+# Test TIPI on movements -------------------------------------------------------
+
+tipi_stats_vr <- tipi_stats %>%
+  filter(PID_Type == "VR.PID")
+
+modelMoveVR <- lm(Head_Magnitude ~ openness + conscientiousness + extraversion + agreeableness + emotionalStability, data = tipi_stats_vr)
+
+summary(modelMoveVR)
+# Model was significant and emotional stability was significant
+# Higher neuroticism -> higher head movement
+# High R squared so likely an overfitted model
+
+
+tipi_stats_pc <- tipi_stats %>%
+  filter(PID_Type == "PC.PID")
+
+modelMovePC <- lm(Mouse_Magnitude ~ openness + conscientiousness + extraversion + agreeableness + emotionalStability, data = tipi_stats_pc)
+
+summary(modelMovePC)
+# No significance for PC
+
+
+# Visualize the data instead to get an idea of general trends-------------------
 
 # Plot team means
 png(filename = "openness_performance.png",
@@ -430,7 +441,6 @@ ggplot(team_means, aes(x = emotionalStability_mean, y = performance)) +
   labs(title = "Team Mean of Emotional Stability vs Performance",
        x = "Team Mean of Emotional Stability", y = "Team Performance")
 dev.off()
-
 
 
 

@@ -3,64 +3,8 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 
-def read_csv_file(file_path, *column_indices):
-    try:
-        with open(file_path, 'r') as file:
-            
-            # Create an object for the csv file
-            csv_reader = csv.reader(file)
-            
-            # Skip the string header file
-            next(csv_reader)
-
-            # Read all the data
-            rows = list(csv_reader)
-
-            # Create the time array
-            time = np.array([float(row[1]) for row in rows])
-            experiment_limit = np.where(time <= 600.0)[0]
-            time = time[experiment_limit]
-
-            # Initialize the positional array
-            position_arrays = []
-
-            for column_index in column_indices:
-                # Initialize coordinate lists
-                x_coords = []
-                y_coords = []
-
-                for i in experiment_limit:
-
-                    row = rows[i]
-                    # Assign the string value and convert to floating point
-                    value = row[column_index]
-                    coords = value.strip("() ").split(";")
-                    coords = [float(x.strip()) for x in coords]
-
-                    # Append with appropriate coordinate system
-                    x_coords.append(coords[0])
-                    y_coords.append(coords[1])
-
-                # Append to the overall array
-                position_arrays.append(np.array([x_coords, y_coords]))
-
-        # Returns arrays of shape (length_of_rows) and (3, length_of_rows)
-        return time, *position_arrays
-    
-    # Exception catch statements
-    except FileNotFoundError:
-        print(f"Error: The file '{file_path} was not found.")
-        exit()
-    except Exception as e:
-        print(f"An error occured: {e}")
-        exit()
-
-
-
-def calculate_magnitude(velocity):
-    # Calculate the magnitude
-    magnitude = np.sqrt(np.sum(velocity**2, axis=0))
-    return magnitude
+from math_helper import * 
+from file_handler import *
 
 def plot_magnitude(time, mouse):
 
@@ -70,14 +14,14 @@ def plot_magnitude(time, mouse):
     # Creates the 2D plot
     fix, ax = plt.subplots()
 
-    plt.plot(time, mouse, color='black')
+    plt.plot(time, mouse, color='purple')
     ax.set_title("Mouse Magnitude")
     ax.set_xlabel("Time Elapsed (m)")
     ax.set_ylabel("Magnitude (N)")
 
     plt.show()
 
-def write_csv_file(file_path, experiment_row, mouse_avg):
+def write_csv_file(file_path, experiment_row, mouse_avg, mouse_j_avg):
     try:
 
         # Read the CSV file from path
@@ -87,6 +31,7 @@ def write_csv_file(file_path, experiment_row, mouse_avg):
         
         if 1 <= experiment_row < len(rows):
             rows[experiment_row][4] = f"{mouse_avg:.6f}"
+            rows[experiment_row][8] = f"{mouse_j_avg:.6f}"
         else:
             print("Invalid Experiment Row")
             return
@@ -110,20 +55,29 @@ def main():
     file_path = input("Enter the file name: ")
 
     # Get the time array as well as positions for hands/head
-    time , mouse = read_csv_file(file_path, 2)
+    time , mouse = read_csv_file(file_path, 2, mode="pc")
+
+    ds_time, ds_mouse = downsample_data(time, mouse)
 
     # Get the magnitudes
-    mouse_mag = calculate_magnitude(mouse)
+    mouse_mag = calculate_magnitude(ds_mouse)
 
+    mouse_accel, mouse_accel_mag = calculate_derivative(ds_mouse, ds_time)
+
+    mouse_jerk, mouse_jerk_mag = calculate_derivative(mouse_accel, ds_time[:-1])
+
+    mouse_jerk_mag = calculate_magnitude(mouse_jerk)
+    
     # Plot the magnitude over time
-    plot_magnitude(time, mouse_mag)
+    plot_magnitude(ds_time, mouse_mag)
 
     # Calculate the average mouse magnitude
     mouse_mag_avg = np.mean(mouse_mag)
+    mouse_jerk_mag_avg = np.mean(mouse_jerk_mag)
 
     experiment_row = int(input("Enter the experiment number to save data: "))
     file_path = input("Enter the output file name: ")
-    write_csv_file(file_path, experiment_row, mouse_mag_avg)
+    write_csv_file(file_path, experiment_row, mouse_mag_avg, mouse_jerk_mag_avg)
     
     
 

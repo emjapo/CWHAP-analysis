@@ -29,7 +29,7 @@ library(R.utils)
 
 ```{r}
 
-preData <- read.csv("../HCC8500-pre_03-18.csv")
+preData <- read.csv("../HCC8500-pre_04-03.csv")
 experimentData <- read.csv("../Experiment_Log.csv")
 
 colnames(preData)
@@ -129,14 +129,14 @@ vgem_long <- preData %>%
                       names_to = "VGEM_facet", 
                       values_to = "vgem") %>%
   select(Session.ID, pid, PID_Type, VGEM_facet, vgem) %>%
-  mutate(PID_Type = recode(PID_Type, PC.PID = "PC", VR.PID = "VR"))
+  mutate(PID_Type = dplyr::recode(PID_Type, PC.PID = "PC", VR.PID = "VR"))
 
 
 vgem_long %>%
   ggplot(aes(x=VGEM_facet, y=vgem, group=PID_Type, fill=PID_Type)) +
   geom_bar(position="dodge", stat = "identity") +
   theme_minimal() +
-  scale_fill_manual(values=met.brewer("Hiroshige", 2)) +
+  scale_fill_manual(values=met.brewer("Archambault", 2)) +
   facet_wrap(~Session.ID, ncol=4) +
   coord_flip() +
   labs(title = "Overview of Team Composition in Terms of Video Game Experience", fill="Modality Type", x="Video Game Experience Facet", y="Score out of 100")
@@ -148,13 +148,13 @@ tipi_long <- preData %>%
                       names_to = "TIPI_facet", 
                       values_to = "tipi") %>%
   select(Session.ID, pid, PID_Type, TIPI_facet, tipi) %>%
-  mutate(PID_Type = recode(PID_Type, PC.PID = "PC", VR.PID = "VR"))
+  mutate(PID_Type = dplyr::recode(PID_Type, PC.PID = "PC", VR.PID = "VR"))
 
 tipi_long %>%
   ggplot(aes(x=TIPI_facet, y=tipi, group=PID_Type, fill=PID_Type)) +
   geom_bar(position="dodge", stat = "identity") +
   theme_minimal() +
-  scale_fill_manual(values=met.brewer("Hiroshige", 2)) +
+  scale_fill_manual(values=met.brewer("Archambault", 2)) +
   facet_wrap(~Session.ID, ncol=4) +
   coord_flip() +
   labs(title = "Overview of Team Composition in Terms of Big Five Personality", fill="Modality Type", x="Big Five Facet", y="Score out of 7")

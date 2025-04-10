@@ -35,11 +35,12 @@ postData <- read.csv("../HCC8500-post_04-03.csv")
 experimentData <- read.csv("../Experiment_Log.csv")
 movementData <- read.csv("../Single_Metric.csv")
 
+
 # Remove unnecessary rows and columns
 # first two rows are subheadings/labels and can be removed
 preData <- preData[- (1:2), ] %>%
   select(-StartDate, -EndDate, -Status, -IPAddress, -Progress, -Duration..in.seconds., -Finished, -RecordedDate, -ResponseId, -RecipientLastName, -RecipientFirstName, -RecipientEmail, -ExternalReference, -LocationLatitude, -LocationLongitude, -DistributionChannel, -UserLanguage)
-head(preData)
+
 
 postData <- postData[- (1:2), ] %>%
   select(-StartDate, -EndDate, -Status, -IPAddress, -Progress, -Duration..in.seconds., -Finished, -RecordedDate, -ResponseId, -RecipientLastName, -RecipientFirstName, -RecipientEmail, -ExternalReference, -LocationLatitude, -LocationLongitude, -DistributionChannel, -UserLanguage)
@@ -63,7 +64,7 @@ cwhapData <- preData %>%
 
 
 # Create a vector for the column numbers we want make numeric
-col_nums <- c(c(2:14), c(16:20), c(23:72), c(78:83))
+col_nums <- c(c(2:14), c(16:20), c(23:72), c(78:87))
 
 # Apply as.numeric() to those columns then print out data type to check
 cwhapData[col_nums] <- sapply(cwhapData[col_nums], as.numeric)
@@ -282,13 +283,13 @@ dev.off()
 
 # None of the median split analyses were significant
 # Compute the analysis of variance
-res.aov <- aov(Number_of_tasks ~ Left_Hand_Magnitude, data = movement_stats)
+res <- lm(Number_of_tasks ~ Left_Hand_Magnitude, data = movement_stats)
 # Summary of the analysis
-print(summary(res.aov))
+print(summary(res))
 
 # Check that we meet the assumptions
-plot(res.aov, 1)
-plot(res.aov, 2)
+plot(res, 1)
+plot(res, 2)
 # There are outliers, but due to the small sample size, we have decided not to remove them
 
 # Test for homogeneity of variances, non-significant means that the assumption is met
@@ -301,7 +302,23 @@ print(cor_test)
 
 # Looking at left hand magnitude by itself was a predictor with a positive correlation with movement
 
+# Jerk Analysis ----------------------------------------------------------------
 
+right_jerk <- lm(Number_of_tasks ~ Right_Hand_Jerk_Magnitude * gameFrequency, data = movement_stats)
+summary(right_jerk)
+left_jerk <- lm(Number_of_tasks ~ Left_Hand_Jerk_Magnitude * gameFrequency, data = movement_stats)
+summary(left_jerk)
+head_jerk <- lm(Number_of_tasks ~ Head_Jerk_Magnitude * gameFrequency, data = movement_stats)
+summary(head_jerk)
+
+# Filter for the PC players
+jerk_stats <- cwhapData %>%
+  filter(PID_Type == "PC.PID")
+
+mouse_jerk <- lm(Number_of_tasks ~ Mouse_Jerk_Magnitude * gameFrequency, data = movement_stats)
+summary(mouse_jerk)
+
+# Marginal significance for the head and mouse jerk predictors. Models not significant.
  
 # TIPI Analyses ----------------------------------------------------------------
 
@@ -583,3 +600,4 @@ summary(modelTemporal)
 summary(modelPerformance)
 summary(modelEffort)
 summary(modelFrustration)
+

@@ -11,7 +11,6 @@ def calculate_derivative(position, time):
 
     Returns:
     - derivative: The new derived data
-    - magnitude: The magnitudes of each of the derived vectors
     """
 
     # Calculate time differences
@@ -25,14 +24,21 @@ def calculate_derivative(position, time):
     for i in range(dp.shape[1]):
         derivative[:, i] = dp[:, i] / dt[i]
     
-    # Calculate the magnitude
-    magnitude = np.sqrt(np.sum(derivative**2, axis=0))
-    
-    return derivative, magnitude
+    return derivative
 
-def calculate_magnitude(velocity):
-    # Calculate the magnitude
-    magnitude = np.sqrt(np.sum(velocity**2, axis=0))
+def calculate_magnitude(input):
+    """
+    Function:
+    Calculates the magnitude of the given input
+
+    Parameters:
+    - input: The array of data you want the magnitude of
+
+    Returns:
+    - magnitude: The sum and square root of the data given
+    """
+
+    magnitude = np.sqrt(np.sum(input**2, axis=0))
     return magnitude
 
 

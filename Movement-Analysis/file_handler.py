@@ -9,6 +9,7 @@ def read_csv_file(file_path, *column_indices, mode):
     Parameters:
     - file path: The file path of the CSV file
     - column indicies: What columns of the CSV file do you want to be read
+    - mode: Whether you are passing in "VR" data or "PC" data
 
     Returns:
     - time: Array of timestamps
@@ -72,25 +73,46 @@ def read_csv_file(file_path, *column_indices, mode):
         exit()
 
 
-def write_csv_file(file_path, experiment_row, left_avg, right_avg, head_avg, left_j_avg, right_j_avg, head_j_avg):
+def write_csv_file(*data, file_path, experiment_row):
+
+    """
+    Function:
+    Reads the data given and writes it to the file path under the row specified
+
+    Parameters:
+    - data: The data you would like to enter into the CSV file (This can only be length of 2 or 6)
+    - file_path: The path of the CSV file you would like to write out to
+    - experiment_row: The row of which experiment you are analyzing
+
+    """
+
     try:
+
+        num_data = len(data)
+
+        if(num_data != 2 and num_data != 6):
+            print("Error: Insufficient input data")
+            return
+        
+
         # Read the CSV file from path
         with open(file_path, 'r', newline='') as file:
             reader = csv.reader(file)
             rows = list(reader)
-
-        # Ensure the row has at least 7 columns
-        while len(rows[experiment_row]) < 9:
-            rows[experiment_row].append("")
-
         
         if 1 <= experiment_row < len(rows):
-            rows[experiment_row][1] = f"{left_avg:.6f}"
-            rows[experiment_row][2] = f"{right_avg:.6f}"
-            rows[experiment_row][3] = f"{head_avg:.6f}"
-            rows[experiment_row][5] = f"{left_j_avg:.6f}"
-            rows[experiment_row][6] = f"{right_j_avg:.6f}"
-            rows[experiment_row][7] = f"{head_j_avg:.6f}"
+            if(num_data == 2):
+                m_avg, mj_avg = data
+                rows[experiment_row][4] = f"{m_avg:.6f}"
+                rows[experiment_row][8] = f"{mj_avg:.6f}"
+            elif(num_data == 6):
+                l_avg, r_avg, h_avg, lj_avg, rj_avg, hj_avg = data
+                rows[experiment_row][1] = f"{l_avg:.6f}"
+                rows[experiment_row][2] = f"{r_avg:.6f}"
+                rows[experiment_row][3] = f"{h_avg:.6f}"
+                rows[experiment_row][5] = f"{lj_avg:.6f}"
+                rows[experiment_row][6] = f"{rj_avg:.6f}"
+                rows[experiment_row][7] = f"{hj_avg:.6f}"
 
         else:
             print("Invalid Experiment Row")
@@ -99,7 +121,7 @@ def write_csv_file(file_path, experiment_row, left_avg, right_avg, head_avg, lef
         with open(file_path, 'w', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(rows)
-    
+   
     # Exception catch statements
     except FileNotFoundError:
         print(f"Error: The file '{file_path}' was not found.")

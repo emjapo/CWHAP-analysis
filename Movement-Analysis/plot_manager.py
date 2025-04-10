@@ -35,28 +35,23 @@ def plot_position(hand_l, hand_r, head, colors):
 
 
 def plot_magnitude(time, *magnitudes, labels=None, colors=None, title_prefix="Magnitude", ylim=None):
-
-    # Creates the 2D plot
-    fig, axes = plt.subplots(3, 1, figsize=(8, 6))
     
     # Format for Axes (10 minute experiment)
     time /= 60.0
 
+    # Get the length of magnitudes to determine how much to write
     num_plots = len(magnitudes)
 
-    if labels is None:
-        labels = [f"{title_prefix} {i+1}" for i in range(num_plots)]
-    if colors is None:
-        colors = ['black'] * num_plots
-    if isinstance(ylim, tuple):
-        ylim = [ylim] * num_plots
-    elif ylim is None:
-        ylim = [None] * num_plots
-    
+    # If the arguments are empty, then we exit the program because this is incorrect
+    if labels is None or colors is None, or ylim is None:
+        print("Error: insufficient data entered.")
+        exit()
+
+    # If we are just plotting the mouse magnitude
     if num_plots == 1:
         plt.figure(figsize=(8,4))
-        plt.plot(time, magnitudes[0], color=colors[0])
-        plt.title(labels[0])
+        plt.plot(time, magnitudes[0], color=colors[3])
+        plt.title(labels)
         plt.xlabel("Time Elapsed (min)")
         plt.ylabel("Magnitude (N)")
 
@@ -64,7 +59,8 @@ def plot_magnitude(time, *magnitudes, labels=None, colors=None, title_prefix="Ma
             plt.ylim(*ylim[0])
         plt.tight_layout
         plt.show()
-    
+
+    # If we are plotting the left/right hands and head magnitudes
     else:
         fig, axes = plt.subplots(num_plots, 1, figsize=(8, 2.5 * num_plots), sharex=True)
         for i in range(num_plots):

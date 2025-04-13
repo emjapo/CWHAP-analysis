@@ -121,6 +121,8 @@ head(postData)
 Demographics are collected in the post task survey. Simple graphs will be made to describe the participants in the study.
 
 ```{r descriptive_stats}
+setwd("../Plots")
+
 # Age
 postData$age <- as.numeric(postData$age)
 
@@ -135,7 +137,10 @@ print(age_stats)
 # Gender
  postData <- postData %>%
    mutate(gender = dplyr::recode(gender, `1` = "Male", `2` = "Female"))
-  
+
+png(filename = "gender-dist.png",
+    width = 2000, height = 2000,
+    units = "px", res = 330)  
 postData %>%
   ggplot(aes(x=as.factor(gender), fill=as.factor(gender))) +
   geom_bar() +
@@ -144,12 +149,16 @@ postData %>%
   labs(title="Participant Gender Distribution", y="Number of Participants", x="Gender") +
   scale_y_continuous(breaks=seq(0, 10, by = 2)) +
   theme(legend.position="none")
+dev.off()
 
 
 # english proficiency
 postData <- postData %>%
   mutate(english = dplyr::recode(english, `1` = "Elementary proficiency", `2`="Limited working proficiency", `3`="Professional working proficiency", `4`="Full professional working proficiency", `5`="Native or bilingual proficiency"))
 
+png(filename = "english-dist.png",
+    width = 2000, height = 2000,
+    units = "px", res = 330)
 postData %>%
   ggplot(aes(x=as.factor(english), fill=as.factor(english))) +
   geom_bar() +
@@ -157,13 +166,16 @@ postData %>%
   theme_minimal() +
   labs(title="Participant English Proficiency Distribution", y="Number of Participants", x="Level of English Proficiency") +
   theme(legend.position="none")
-
+dev.off()
 
 # Lived in America
 postData <- postData %>%
   mutate(lived = dplyr::recode(lived, `1`="Less than 1 year", `2`="1 year", `3`="2 years", `4`="3 years", `5`="4 years", `6`="Greater than 5 years", `7`="Native (All my life)"))
 
 
+png(filename = "time-in-us.png",
+    width = 2000, height = 2000,
+    units = "px", res = 330)
 postData %>%
   ggplot(aes(x=as.factor(lived), fill=as.factor(lived))) +
   geom_bar() +
@@ -171,6 +183,7 @@ postData %>%
   theme_minimal() +
   labs(title="Participant Distribution of Length of Time in the US", y="Number of Participants", x="Years in the US") +
   theme(legend.position="none")
+dev.off()
 
 
 ```

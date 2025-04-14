@@ -28,7 +28,7 @@ def plot_position(hand_l, hand_r, head, colors):
     ax.set_zlabel('Y-axis')
 
     # Add the title to the plot
-    ax.set_title('VR Player Positional Data')
+    ax.set_title('Low Movement VR Player Positional Data')
 
     ax.legend(loc='upper left', bbox_to_anchor=(-0.35, 0.6))
     plt.show()
@@ -43,7 +43,7 @@ def plot_magnitude(time, *magnitudes, labels=None, colors=None, title_prefix="Ma
     num_plots = len(magnitudes)
 
     # If the arguments are empty, then we exit the program because this is incorrect
-    if labels is None or colors is None, or ylim is None:
+    if labels is None or colors is None or ylim is None:
         print("Error: insufficient data entered.")
         exit()
 
@@ -68,8 +68,7 @@ def plot_magnitude(time, *magnitudes, labels=None, colors=None, title_prefix="Ma
             ax.plot(time[:-1], magnitudes[i], color=colors[i])
             ax.set_title(labels[i])
             ax.set_ylabel("Magnitude (N)")
-            if ylim[i]:
-                ax.set_ylim(*ylim[i])
+            ax.set_ylim(ylim)
         
         axes[-1].set_xlabel("Time Elapsed (min)")
         plt.tight_layout()

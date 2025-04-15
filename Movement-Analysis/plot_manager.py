@@ -2,6 +2,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def plot_position(hand_l, hand_r, head, colors):
+    
+    """
+    Function:
+    Plots the three dimensional data for the VR participant
+
+    Parameters:
+    hand_l: Numpy array of three-dimensional coordinates for left controller
+    hand_r: Numpy array of three-dimensional coordinates for right controller
+    head: Numpy array of three-dimensional coordinates for headset
+    colors: Color pallette entered beforehand for the plot
+
+    """
 
     # Creates the 3D plot
     fig = plt.figure()
@@ -34,8 +46,21 @@ def plot_position(hand_l, hand_r, head, colors):
     plt.show()
 
 
-def plot_magnitude(time, *magnitudes, labels=None, colors=None, title_prefix="Magnitude", ylim=None):
+def plot_magnitude(time, *magnitudes, labels=None, colors=None, ylim=None):
     
+    """
+    Function:
+    Reads the data and plots the magnitudes given from the data
+
+    Parameters:
+    - time: Numpy array for time indices for the velocities
+    - magnitudes*: Numpy array(s) for the magnitude data
+    - labels: String labels for the titles if multiple graphs are indicated
+    - colors: Color pallette for the graphs
+    - ylim: Limits for the y-axis to ensure all data is correctly formatted
+
+    """
+
     # Format for Axes (10 minute experiment)
     time /= 60.0
 

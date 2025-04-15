@@ -34,7 +34,7 @@ def main():
     mouse_jerk_mag = calculate_magnitude(mouse_jerk)
     
     # Plot the magnitude over time
-    plot_magnitude(ds_time, mouse_mag, labels="Low Movement Mouse Magnitude", colors=colors, ylim=(0, 80))
+    plot_magnitude(ds_time, mouse_mag, labels="Low Movement Mouse Magnitude", colors=colors, ylim=(0, 70))
 
     # Calculate the average mouse magnitude
     mouse_mag_avg = np.mean(mouse_mag)

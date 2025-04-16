@@ -2,6 +2,7 @@ import csv
 import numpy as np
 
 def read_csv_file(file_path, *column_indices, mode):
+   
     """
     Function:
     Reads the CSV file give through the file path and places data into usable arrays.

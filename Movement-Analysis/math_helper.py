@@ -1,6 +1,7 @@
 import numpy as np
 
 def calculate_derivative(position, time):
+    
     """
     Function:
     Calculates the derivative using broadcasting
@@ -29,6 +30,7 @@ def calculate_derivative(position, time):
     return derivative
 
 def calculate_magnitude(input):
+    
     """
     Function:
     Calculates the magnitude of the given input
@@ -45,6 +47,7 @@ def calculate_magnitude(input):
 
 
 def downsample_data(time, *position_arrays, target_rate=1.0):
+    
     """
     Downsample position data to approximately 1 sample per second.
     

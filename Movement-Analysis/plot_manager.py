@@ -54,9 +54,7 @@ def plot_magnitude(time, *magnitudes, labels=None, colors=None, title_prefix="Ma
         plt.title(labels)
         plt.xlabel("Time Elapsed (min)")
         plt.ylabel("Magnitude (N)")
-
-        if ylim[0]:
-            plt.ylim(*ylim[0])
+        plt.ylim(ylim)
         plt.tight_layout
         plt.show()
 
@@ -70,6 +68,7 @@ def plot_magnitude(time, *magnitudes, labels=None, colors=None, title_prefix="Ma
             ax.set_ylabel("Magnitude (N)")
             ax.set_ylim(ylim)
         
+        # Set x-axis label for bottom of entire plot
         axes[-1].set_xlabel("Time Elapsed (min)")
         plt.tight_layout()
         plt.show()

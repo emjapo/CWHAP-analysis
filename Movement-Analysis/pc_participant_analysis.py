@@ -11,6 +11,7 @@ from plot_manager import *
 
 def main():
 
+    # Color palatte provided be MetBrewer
     colors = met_brew(name="Archambault")
 
     # Asks for input on which file needs to be analyzed
@@ -34,7 +35,7 @@ def main():
     mouse_jerk_mag = calculate_magnitude(mouse_jerk)
     
     # Plot the magnitude over time
-    plot_magnitude(ds_time, mouse_mag, labels="Low Movement Mouse Magnitude", colors=colors, ylim=(0, 80))
+    plot_magnitude(ds_time, mouse_mag, labels="Mouse Magnitude", colors=colors, ylim=(0, 80))
 
     # Calculate the average mouse magnitude
     mouse_mag_avg = np.mean(mouse_mag)

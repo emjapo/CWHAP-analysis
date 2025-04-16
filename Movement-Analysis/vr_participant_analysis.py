@@ -7,7 +7,7 @@ import numpy as np
 
 def main():
 
-    # Input the colors you want for the graph through MetBrewer library
+    # Color palette provided by MetBrewer
     colors = met_brew(name="Archambault")
 
     # Asks for input on which file needs to be analyzed

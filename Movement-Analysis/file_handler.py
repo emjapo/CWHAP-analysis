@@ -87,13 +87,14 @@ def write_csv_file(*data, file_path, experiment_row):
     """
 
     try:
-
+        
+        # Get the amount of data that is being written
         num_data = len(data)
 
+        # If the number does not match VR or PC then exit with errors
         if(num_data != 2 and num_data != 6):
             print("Error: Insufficient input data")
             return
-        
 
         # Read the CSV file from path
         with open(file_path, 'r', newline='') as file:

@@ -21,6 +21,8 @@ def calculate_derivative(position, time):
     
     # Calculate the derivative (velocity, acceleration, or jerk)
     derivative = np.zeros_like(dp)
+    
+    # Loop over either X, Y, Z or X, Y
     for i in range(dp.shape[1]):
         derivative[:, i] = dp[:, i] / dt[i]
     

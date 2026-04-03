@@ -1,6 +1,5 @@
 import csv
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 from met_brewer import met_brew
 
